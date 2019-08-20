@@ -1,8 +1,8 @@
 <template lang="pug">
-    #app
-        pageHeader
-        router-view
-        pageFooter
+  #app
+    pageHeader
+    router-view
+    pageFooter
 </template>
 
 <script>
@@ -10,32 +10,32 @@ import header from '@/components/Header'
 import footer from '@/components/Footer'
 
 export default {
-    components: {
-        pageHeader: header,
-        pageFooter: footer,
+  components: {
+    pageHeader: header,
+    pageFooter: footer,
+  },
+  created () {
+    this.loadProductsData();
+    this.mayBeRestoreCart();
+  },
+  methods: {
+    loadProductsData () {
+      this.$store.dispatch('loadProducts');
     },
-    created () {
-        this.loadProductsData();
-        this.mayBeRestoreCart();
+    mayBeRestoreCart () {
+      const cartJson = localStorage.getItem('cart');
+
+      if (cartJson === null) {
+        return false;
+      }
+
+      const cart = JSON.parse(cartJson);
+
+      if (Array.isArray(cart)) {
+        this.$store.commit('setCart', cart);
+      }
     },
-    methods: {
-        loadProductsData () {
-            this.$store.dispatch('loadProducts');
-        },
-        mayBeRestoreCart () {
-            const cartJson = localStorage.getItem('cart');
-
-            if (cartJson === null) {
-                return false;
-            }
-
-            const cart = JSON.parse(cartJson);
-
-            if (Array.isArray(cart)) {
-                this.$store.commit('setCart', cart);
-            }
-        },
-    },
+  },
 }
 </script>
 
@@ -43,67 +43,67 @@ export default {
 @import (css) url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
 
 body {
-    background-color: #f7f7f7;
+  background-color: #f7f7f7;
 }
 #app {
-    font-family: 'Ubuntu', sans-serif;
-    color: #2c3e50;
+  font-family: 'Ubuntu', sans-serif;
+  color: #2c3e50;
 }
 .page-content {
-    padding: 60px 0;
+  padding: 60px 0;
 }
 .title {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .loading {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    width: 270px;
-    height: 100px;
-    margin-left: auto;
-    margin-right: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  width: 270px;
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
 
-    &__dot {
-        display: inline-block;
-        width: 48px;
-        height: 48px;
-        background-color: #888;
-        border-radius: 50%;
-        -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-                animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  &__dot {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-color: #888;
+    border-radius: 50%;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 
-        &:nth-child(1) {
-            -webkit-animation-delay: -0.32s;
-            animation-delay: -0.32s;
-        }
-        &:nth-child(2) {
-            -webkit-animation-delay: -0.16s;
-            animation-delay: -0.16s;
-        }
+    &:nth-child(1) {
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
     }
+    &:nth-child(2) {
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+  }
 }
 @keyframes sk-bouncedelay {
-    0%, 80%, 100% {
-        -webkit-transform: scale(0);
-        transform: scale(0);
-    } 40% {
-        -webkit-transform: scale(1.0);
-        transform: scale(1.0);
-    }
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
 }
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.4s;
+  transition: opacity 0.4s;
 }
 .fade-enter,
 .fade-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 </style>
