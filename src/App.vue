@@ -6,37 +6,27 @@
 </template>
 
 <script>
-import header from '@/components/Header'
-import footer from '@/components/Footer'
+import pageHeader from '@/components/Header';
+import pageFooter from '@/components/Footer';
 
 export default {
   components: {
-    pageHeader: header,
-    pageFooter: footer,
+    pageHeader,
+    pageFooter,
   },
   created () {
     this.loadProductsData();
-    this.mayBeRestoreCart();
+    this.restoreCart();
   },
   methods: {
     loadProductsData () {
       this.$store.dispatch('loadProducts');
     },
-    mayBeRestoreCart () {
-      const cartJson = localStorage.getItem('cart');
-
-      if (cartJson === null) {
-        return false;
-      }
-
-      const cart = JSON.parse(cartJson);
-
-      if (Array.isArray(cart)) {
-        this.$store.commit('setCart', cart);
-      }
+    restoreCart () {
+      this.$store.commit('restoreCart');
     },
   },
-}
+};
 </script>
 
 <style lang="less">

@@ -11,9 +11,9 @@
           .loading__dot
           .loading__dot
         .cart__body(v-else)
-          .cart__items(v-if="productsList.length > 0")
+          .cart__items(v-if="cartProducts.length > 0")
             .cart__products
-              .cart__product(v-for="product in productsList")
+              .cart__product(v-for="product in cartProducts" :key="`product-${product.id}-${product.count}`")
                 product-in-cart(:data="product")
             .cart__bottom.columns
               .cart__buttons.column
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import {mapState, mapGetters} from 'vuex'
-import productInCart      from '@/components/ProductInCart'
-import mixinFormatMoney     from '@/mixins/format-money'
+import {mapState, mapGetters, mapMutations} from 'vuex'
+import productInCart    from '@/components/ProductInCart'
+import mixinFormatMoney from '@/mixins/format-money'
 
 export default {
   mixins: [mixinFormatMoney],
@@ -39,37 +39,21 @@ export default {
   },
   computed: {
     ...mapState([
+      'productsList',
       'productsInCart',
     ]),
     ...mapGetters([
       'loadingInProgress',
+      'cartProducts',
+      'cartTotalPice',
     ]),
 
-    productsList () {
-      let addedProducts = this.$store.state.productsList.filter(product => this.productsInCart.indexOf(product.id) !== -1);;
-
-      // Add count field to product data
-      addedProducts = addedProducts.map(aProduct => {
-        let data = aProduct;
-        data.count = this.productsInCart.filter(bProductID => bProductID === aProduct.id).length;
-        return data;
-      });
-
-      return addedProducts.reverse();
-    },
-
     totalPriceString () {
-      let price = 0;
-
-      this.productsList.forEach(product => price += product.price * product.count);
-
-      return this.formatMoney(price);
+      return this.formatMoney(this.cartTotalPice);
     },
   },
   methods: {
-    clearCart () {
-      this.$store.commit('clearCart');
-    },
+    ...mapMutations(['clearCart']),
   },
 }
 </script>

@@ -26,10 +26,14 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
   computed: {
+    ...mapGetters(['cartLength']),
+
     cartHint () {
-      const cartLength = this.$store.getters.cartLength === 0 ? '' : ` (${this.$store.getters.cartLength})`;
+      const cartLength = this.cartLength === 0 ? '' : ` (${this.cartLength})`;
 
       return `Cart${cartLength}`;
     },

@@ -1,6 +1,6 @@
 export default {
   productsList:   [],
-  productsInCart: [],
+  productsInCart: {},
 
   currency: '$',
 }
